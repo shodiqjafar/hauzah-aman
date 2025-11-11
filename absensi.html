@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Absensi Pondok</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #007bff;
+      --gradient: linear-gradient(135deg, #00c6ff, #0072ff);
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--gradient);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      width: 320px;
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #0072ff;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: var(--radius);
+      border: 1px solid #ccc;
+      transition: all 0.2s;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 6px rgba(0,123,255,0.4);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--gradient);
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.15s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #error {
+      color: red;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    #message {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+    }
+
+    footer a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 2px;
+      background: #fff;
+      transition: width 0.3s ease;
+    }
+
+    footer a:hover::after {
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>Login Absensi</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Masuk</button>
+    <p id="error"></p>
+    <p id="message">✅ Akses anda diterima, terimakasih!</p>
+  </div>
+
+  <footer>
+    <p>© 2025 Pondok Digital | <a href="#">Hubungi Admin</a></p>
+  </footer>
+
+  <script>
+    const msg = document.getElementById("message");
+    msg.style.opacity = 0;
+
+    function login() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      const error = document.getElementById("error");
+      error.textContent = "";
+      msg.style.opacity = 0;
+
+      if (user === "admin" && pass === "1234") {
+        msg.style.opacity = 1;
+        localStorage.setItem("role", "admin");
+        setTimeout(() => window.location.href = "admin.html", 1500);
+      } else if (user === "santri" && pass === "1111") {
+        msg.style.opacity = 1;
+        localStorage.setItem("role", "santri");
+        setTimeout(() => window.location.href = "santri.html", 1500);
+      } else {
+        error.textContent = "❌ Username atau password salah!";
+      }
+    }
+  </script>
+</body>
+</html>

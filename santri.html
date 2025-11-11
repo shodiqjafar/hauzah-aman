@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absensi Santri</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .absen-box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #fda085;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover { background: #f77b6b; }
+
+    #message {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="absen-box">
+    <h2>Absensi Santri</h2>
+    <input type="text" id="nama" placeholder="Masukkin nama entee">
+    <button onclick="absen('Keluar')">Keluar Pondok</button>
+    <button onclick="absen('Masuk')">Masuk Pondok</button>
+    <button onclick="logout()">Logout</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    if (localStorage.getItem("role") !== "santri") {
+      alert("Akses ditolak! Login sebagai santri dulu.");
+      window.location.href = "index.html";
+    }
+
+    function absen(status) {
+      const nama = document.getElementById("nama").value.trim();
+      const msg = document.getElementById("message");
+      if (!nama) return alert(" NAMA ENTE MASUKIN !");
+
+      const waktu = new Date().toLocaleString();
+      const data = JSON.parse(localStorage.getItem("absensi") || "[]");
+      data.push({ nama, waktu, status });
+      localStorage.setItem("absensi", JSON.stringify(data));
+
+      // Tampilkan pesan sukses
+      msg.textContent = "ACC BROO , SUKRON DATA TERSIMPAN !";
+      msg.style.opacity = 1;
+
+      // Setelah 1.5 detik, reset pesan
+      setTimeout(() => {
+        msg.style.opacity = 0;
+      }, 2000);
+    }
+
+    function logout() {
+      localStorage.removeItem("role");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

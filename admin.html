@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Absensi</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #84fab0, #8fd3f4);
+      padding: 30px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #4CAF50;
+      color: white;
+    }
+    button {
+      margin: 10px 5px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .download { background: #007bff; color: white; }
+    .clear { background: #ff4d4d; color: white; }
+    .logout { background: gray; color: white; }
+  </style>
+</head>
+<body>
+  <h2>Riwayat Absensi Santri</h2>
+  <button class="download" onclick="downloadData()">Download Data</button>
+  <button class="clear" onclick="hapusData()">Hapus Semua</button>
+  <button class="logout" onclick="logout()">Logout</button>
+
+  <table id="tabel">
+    <thead>
+      <tr><th>Nama</th><th>Status</th><th>Waktu</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    if (localStorage.getItem("role") !== "admin") {
+      alert("Akses ditolak! Login sebagai ustad dulu.");
+      window.location.href = "index.html";
+    }
+
+    const data = JSON.parse(localStorage.getItem("absensi") || "[]");
+    const tbody = document.querySelector("#tabel tbody");
+    data.forEach(d => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${d.nama}</td><td>${d.status}</td><td>${d.waktu}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    function downloadData() {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "riwayat_absensi.json";
+      a.click();
+    }
+
+    function hapusData() {
+      if (confirm("ANTUM YAKIN NIH DIHAPUS???")) {
+        localStorage.removeItem("absensi");
+        location.reload();
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("role");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
